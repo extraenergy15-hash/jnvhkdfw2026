@@ -3,429 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAREWELL 2026 | Redefining Structural Integrity</title>
+    <title>JNV HKD FAREWELL 26 | Architectural Legacy</title>
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* --- CSS VARIABLES & RESET --- */
         :root {
-            --bg: #0A0A0A;
-            --text: #F5F5F5;
-            --accent: #C4A484;
-            --glass: rgba(10, 10, 10, 0.9);
-            --border: rgba(245, 245, 245, 0.1);
-            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+            --bg-color: #0A0A0A;
+            --text-color: #F5F5F5;
+            --accent-color: #C4A484;
+            --accent-muted: rgba(196, 164, 132, 0.4);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; /* Hide default cursor */
+            cursor: none !important; /* Hide default cursor */
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Work Sans', sans-serif;
-            overflow: hidden; /* Prevent body scroll, use container */
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
+            overflow: hidden; /* Prevent body scroll, use container scroll */
         }
 
         h1, h2, h3 {
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
-            letter-spacing: -0.02em;
+            line-height: 0.9;
         }
 
-        /* --- CUSTOM CURSOR --- */
+        /* Custom Cursor */
         #cursor {
             position: fixed;
             width: 20px;
             height: 20px;
-            background-color: var(--accent);
+            background: var(--accent-color);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            opacity: 0.5;
+            mix-blend-mode: difference;
+            transition: transform 0.2s ease, opacity 0.2s ease, border-radius 0.2s ease;
             transform: translate(-50%, -50%);
-            transition: width 0.3s var(--ease), height 0.3s var(--ease), opacity 0.3s var(--ease), border-radius 0.3s var(--ease);
         }
 
         #cursor.hovered {
-            width: 60px;
-            height: 60px;
-            opacity: 0.15;
-            background-color: var(--text);
+            transform: translate(-50%, -50%) scale(3);
+            opacity: 0.5;
         }
 
-        #cursor.plus::before, #cursor.plus::after {
-            content: '';
+        #cursor.plus::after {
+            content: '+';
             position: absolute;
-            background: var(--text);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            color: white;
+            font-size: 10px;
+            font-family: serif;
         }
 
-        #cursor.plus {
-            border-radius: 4px;
-            width: 40px;
-            height: 40px;
-            opacity: 0.8;
-        }
-
-        /* --- NAVIGATION --- */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2rem 4rem;
-            z-index: 1000;
-            transition: all 0.5s var(--ease);
-        }
-
-        nav.scrolled {
-            padding: 1.2rem 4rem;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 1.5rem;
-            text-decoration: none;
-            color: var(--text);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text);
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        /* --- SCROLL CONTAINER --- */
-        #main-container {
+        /* Layout Container */
+        .snap-container {
             display: flex;
             width: 100vw;
             height: 100vh;
             overflow-x: scroll;
-            overflow-y: hidden;
             scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            scrollbar-width: none;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE/Edge */
         }
 
-        #main-container::-webkit-scrollbar {
-            display: none;
+        .snap-container::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
         }
 
         section {
-            min-width: 100vw;
+            flex: 0 0 100vw;
             height: 100vh;
             scroll-snap-align: start;
             scroll-snap-stop: always;
             position: relative;
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            padding: 0 10%;
+            padding: 4rem;
             overflow: hidden;
         }
 
-        /* --- HERO SECTION --- */
-        #hero {
-            background: #000;
-            padding: 0;
+        /* Sticky Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem 4rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.1);
+            transition: background 0.3s ease;
         }
 
-        .hero-img {
+        nav.scrolled {
+            background: rgba(0,0,0,0.9);
+            border-bottom: 1px solid #222;
+        }
+
+        /* Hero Ken Burns */
+        .hero-bg {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            opacity: 0.4;
+            z-index: -1;
+            background: linear-gradient(rgba(10,10,10,0.7), rgba(10,10,10,0.7)), 
+                        url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070') center/cover;
             animation: kenBurns 20s infinite alternate;
         }
 
         @keyframes kenBurns {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            max-width: 1000px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .hero-content h1 {
-            font-size: 5.5rem;
-            line-height: 1;
-            margin-bottom: 2.5rem;
-        }
-
-        .hero-content p {
-            font-size: 1.2rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-            margin-bottom: 3.5rem;
-        }
-
-        .cta {
-            display: inline-block;
-            padding: 1.5rem 3.5rem;
-            border: 2px solid var(--accent);
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            transition: all 0.4s var(--ease);
-        }
-
-        .cta:hover {
-            background: var(--accent);
-            color: var(--bg);
-        }
-
-        /* --- PHILOSOPHY SECTION --- */
-        #philosophy {
-            background: var(--bg);
-        }
-
-        .section-tag {
-            color: var(--accent);
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-
-        .split-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5rem;
-            align-items: center;
-        }
-
-        #philosophy h2 {
-            font-size: 4rem;
-        }
-
-        .philosophy-text {
-            font-size: 1.6rem;
-            font-weight: 300;
-            opacity: 0.8;
-        }
-
-        /* --- GALLERY SECTION --- */
-        #gallery {
-            background: #0D0D0D;
-            justify-content: flex-start;
-            padding-right: 5rem;
-        }
-
-        .gallery-track {
-            display: flex;
-            gap: 3rem;
-            height: 65vh;
-            align-items: center;
-        }
-
+        /* Gallery Parallax Styles */
         .gallery-item {
             position: relative;
-            flex: 0 0 500px;
-            height: 100%;
+            width: 30vw;
+            height: 60vh;
+            margin: 0 2rem;
             overflow: hidden;
-            background: #111;
-            border: 1px solid var(--border);
+            flex-shrink: 0;
         }
 
-        .gallery-img {
+        .gallery-img-wrapper {
             position: absolute;
             top: 0;
-            left: -20%; /* Offset for parallax */
+            left: -20%;
             width: 140%;
             height: 100%;
-            object-fit: cover;
-            filter: grayscale(1) brightness(0.6);
-            transition: filter 0.6s var(--ease);
+            background-size: cover;
+            background-position: center;
+            will-change: transform;
         }
 
-        .gallery-item:hover .gallery-img {
-            filter: grayscale(0) brightness(0.3);
+        .gallery-content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
         }
 
-        .gallery-info {
-            position: absolute;
-            bottom: 3rem;
-            left: 3rem;
-            z-index: 5;
+        .gallery-item:hover .gallery-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item:hover .gallery-img-wrapper {
+            filter: brightness(0.5);
+        }
+
+        /* Entrance Animations */
+        .fade-slide {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.6s var(--ease);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .gallery-item:hover .gallery-info {
+        .fade-slide.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .gallery-info h3 { font-size: 1.8rem; }
-
-        /* --- SERVICES SECTION --- */
-        #services {
-            background: var(--bg);
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            bottom: 2rem;
+            left: 4rem;
+            width: 200px;
+            height: 2px;
+            background: #222;
+            z-index: 1000;
         }
 
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: var(--border);
-            border: 1px solid var(--border);
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%;
+            transition: width 0.1s linear;
         }
 
-        .service-card {
-            background: var(--bg);
-            padding: 5rem 3rem;
-            transition: background 0.4s ease;
-        }
-
-        .service-card:hover {
-            background: #111;
-        }
-
-        .service-card h3 {
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-        }
-
-        /* --- CONTACT SECTION --- */
-        #contact {
-            background: #000;
-        }
-
-        .contact-wrap {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 6rem;
-        }
-
-        .contact-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        input, select, textarea {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid var(--border);
-            padding: 1.2rem 0;
-            color: var(--text);
-            font-family: inherit;
-            width: 100%;
-            font-size: 1rem;
-            transition: border-color 0.4s;
-        }
-
-        input:focus {
-            outline: none;
-            border-bottom-color: var(--accent);
-        }
-
-        .full-width { grid-column: span 2; }
-
-        .submit-btn {
-            background: var(--accent);
-            color: var(--bg);
-            border: none;
-            padding: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-top: 1rem;
-            transition: 0.4s;
-        }
-
-        .submit-btn:hover { background: var(--text); }
-
-        /* --- ANIMATIONS --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s var(--ease);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* --- MOBILE RESPONSIVENESS --- */
+        /* Responsive */
         @media (max-width: 768px) {
-            * { cursor: auto !important; }
-            #cursor { display: none; }
             body { overflow-y: auto; }
-
-            #main-container {
-                display: block;
+            .snap-container {
+                flex-direction: column;
                 height: auto;
+                width: 100%;
+                overflow-x: hidden;
                 scroll-snap-type: none;
-                overflow: visible;
             }
-
             section {
                 width: 100%;
                 height: auto;
-                min-height: 90vh;
+                min-height: 100vh;
                 padding: 6rem 2rem;
-                scroll-snap-align: none;
             }
+            .gallery-item {
+                width: 100%;
+                margin: 1rem 0;
+            }
+            nav { padding: 1rem 2rem; }
+            .progress-container { display: none; }
+        }
 
-            nav { padding: 1.5rem 2rem; background: var(--glass); }
-            .nav-links { display: none; }
+        /* Form styling */
+        input, select, textarea {
+            background: transparent;
+            border: 1px solid #333;
+            color: white;
+            padding: 1rem;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
 
-            .hero-content h1 { font-size: 2.8rem; }
-            .split-layout, .services-grid, .contact-wrap, .contact-form {
-                grid-template-columns: 1fr;
-            }
-            .full-width, .submit-btn { grid-column: span 1; }
-            
-            .gallery-track {
-                flex-direction: column;
-                height: auto;
-            }
-            .gallery-item { flex: 0 0 400px; width: 100%; }
+        input:focus, select:focus, textarea:focus {
+            border-color: #22c55e; /* Soft green pulse */
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.1);
         }
     </style>
 </head>
@@ -434,209 +254,282 @@
     <div id="cursor"></div>
 
     <nav id="navbar">
-        <a href="#" class="logo">FAREWELL 2026.</a>
-        <ul class="nav-links">
-            <li><a href="#hero">Home</a></li>
-            <li><a href="#philosophy">About</a></li>
-            <li><a href="#gallery">Portfolio</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+        <div class="text-2xl font-black tracking-tighter" style="color: var(--accent-color);">JNV HKD FAREWELL 26</div>
+        <div class="hidden md:flex gap-8 uppercase text-xs tracking-widest font-medium">
+            <a href="#hero" class="nav-link">Home</a>
+            <a href="#philosophy" class="nav-link">Legacy</a>
+            <a href="#gallery" class="nav-link">Portfolio</a>
+            <a href="#services" class="nav-link">Craft</a>
+            <a href="#contact" class="px-4 py-2 bg-[#F5F5F5] text-black font-bold hover:bg-[#C4A484] transition-colors nav-link">Contact</a>
+        </div>
     </nav>
 
-    <main id="main-container">
-        <!-- Section 1: Hero -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <main class="snap-container" id="mainScroller">
+        
+        <!-- SECTION 1: HERO -->
         <section id="hero">
-            <img src="DSC_0413.JPG" alt="Architecture">
-            <div class="hero-content">
-                <p class="reveal">Architecture for the Individual Experience</p>
-                <h1 class="reveal">Redefining the Human Experience through Structural Integrity.</h1>
-                <a href="#gallery" class="cta reveal">Explore Our Recent Works</a>
-            </div>
-        </section>
-
-        <!-- Section 2: Philosophy -->
-        <section id="philosophy">
-            <div class="split-layout">
-                <div>
-                    <span class="section-tag reveal">The Differentiator</span>
-                    <h2 class="reveal">Restrained. Elegant. Precise.</h2>
-                </div>
-                <div class="philosophy-text reveal">
-                    We specialize in merging structural precision with the nuances of human habit. Our firm caters to the client’s unique culture, optimizing productivity and well-being through intentional, luxuriously practical space management.
+            <div class="hero-bg"></div>
+            <div class="max-w-6xl w-full text-center md:text-left z-10">
+                <h1 class="text-6xl md:text-9xl mb-4 fade-slide">Redefining the <br>Human Experience.</h1>
+                <p class="text-lg md:text-2xl font-light max-w-2xl mb-8 fade-slide" style="color: #ccc;">
+                    Architecture for the Individual Experience. Merging structural precision with the nuances of human habit.
+                </p>
+                <div class="fade-slide">
+                    <button class="gallery-trigger group relative overflow-hidden px-10 py-4 border border-[#F5F5F5] text-[#F5F5F5] uppercase tracking-widest text-sm font-bold transition-all">
+                        <span class="relative z-10 group-hover:text-black transition-colors">Explore Our Recent Works</span>
+                        <div class="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                    </button>
                 </div>
             </div>
         </section>
 
-        <!-- Section 3: Project Gallery -->
-        <section id="gallery">
-            <div class="gallery-track">
-                <!-- Item 1 -->
-                <div class="gallery-item reveal">
-                    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=800" class="gallery-img" data-speed="0.6">
-                    <div class="gallery-info">
-                        <span class="section-tag">Residential</span>
-                        <h3>The Monolith Villa</h3>
+        <!-- SECTION 2: PHILOSOPHY -->
+        <section id="philosophy" class="bg-[#111]">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl w-full items-center">
+                <div class="fade-slide">
+                    <span class="text-[#C4A484] tracking-[0.3em] uppercase text-xs font-bold mb-4 block">Our Ethos</span>
+                    <h2 class="text-5xl md:text-7xl mb-6">Restrained.<br>Elegant.<br>Precise.</h2>
+                    <p class="text-xl leading-relaxed text-[#aaa] font-light">
+                        We cater to the unique culture of our clients, creating spaces that optimize productivity and foster emotional resonance. Every line drawn is a commitment to professional integrity and expertise.
+                    </p>
+                </div>
+                <div class="fade-slide">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000" class="w-full grayscale hover:grayscale-0 transition-all duration-700" alt="Minimalist Architecture">
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: PROJECT GALLERY -->
+        <section id="gallery" class="flex flex-col items-start justify-center overflow-visible">
+            <div class="mb-12 ml-4 md:ml-20 fade-slide">
+                <h2 class="text-5xl md:text-8xl">The Proof</h2>
+                <p class="text-[#C4A484] tracking-widest uppercase text-sm mt-2">Curated structural narratives</p>
+            </div>
+            
+            <div class="flex flex-nowrap md:px-20 overflow-visible" id="parallaxGallery">
+                <!-- Project Card 1 -->
+                <div class="gallery-item group">
+                    <div class="gallery-img-wrapper" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000');"></div>
+                    <div class="gallery-content">
+                        <span class="text-xs uppercase tracking-tighter mb-2">Residential</span>
+                        <h3 class="text-2xl mb-4">The Obsidian Villa</h3>
+                        <button class="text-left text-xs border-b border-white pb-1 w-max">VIEW PROJECT</button>
                     </div>
                 </div>
-                <!-- Item 2 -->
-                <div class="gallery-item reveal">
-                    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&q=80&w=800" class="gallery-img" data-speed="0.6">
-                    <div class="gallery-info">
-                        <span class="section-tag">Commercial</span>
-                        <h3>Aether Nexus</h3>
+
+                <!-- Project Card 2 -->
+                <div class="gallery-item group">
+                    <div class="gallery-img-wrapper" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1000');"></div>
+                    <div class="gallery-content">
+                        <span class="text-xs uppercase tracking-tighter mb-2">Commercial</span>
+                        <h3 class="text-2xl mb-4">Ether Headquarters</h3>
+                        <button class="text-left text-xs border-b border-white pb-1 w-max">VIEW PROJECT</button>
                     </div>
                 </div>
-                <!-- Item 3 -->
-                <div class="gallery-item reveal">
-                    <img src="https://images.unsplash.com/photo-1518005020480-1097c009703a?auto=format&fit=crop&q=80&w=800" class="gallery-img" data-speed="0.6">
-                    <div class="gallery-info">
-                        <span class="section-tag">Institutional</span>
-                        <h3>Veridian Library</h3>
-                    </div>
-                </div>
-                <!-- Item 4 -->
-                <div class="gallery-item reveal">
-                    <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=800" class="gallery-img" data-speed="0.6">
-                    <div class="gallery-info">
-                        <span class="section-tag">Residential</span>
-                        <h3>Canyon Heights</h3>
+
+                <!-- Project Card 3 -->
+                <div class="gallery-item group">
+                    <div class="gallery-img-wrapper" style="background-image: url('https://images.unsplash.com/photo-1518005020410-67bc15408221?auto=format&fit=crop&q=80&w=1000');"></div>
+                    <div class="gallery-content">
+                        <span class="text-xs uppercase tracking-tighter mb-2">Institutional</span>
+                        <h3 class="text-2xl mb-4">Monolith Academy</h3>
+                        <button class="text-left text-xs border-b border-white pb-1 w-max">VIEW PROJECT</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 4: Services -->
-        <section id="services">
-            <span class="section-tag reveal" style="margin-bottom: 4rem;">Expertise & Mastery</span>
-            <div class="services-grid">
-                <div class="service-card reveal">
-                    <h3>Architectural Planning</h3>
-                    <p>High-precision blueprints that balance aesthetic vision with functional feasibility.</p>
+        <!-- SECTION 4: SERVICES -->
+        <section id="services" class="bg-[#050505]">
+            <div class="max-w-6xl w-full">
+                <div class="text-center mb-16 fade-slide">
+                    <h2 class="text-5xl md:text-8xl mb-4">Luxuriously Practical</h2>
+                    <p class="text-[#C4A484] tracking-[0.5em] uppercase text-sm">Our Core Competencies</p>
                 </div>
-                <div class="service-card reveal">
-                    <h3>Interior Styling</h3>
-                    <p>Curated material selection that defines the emotional resonance of the space.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-1 px-4 fade-slide">
+                    <div class="p-12 border border-[#222] hover:bg-[#111] transition-colors group">
+                        <div class="text-[#C4A484] text-4xl mb-6">01</div>
+                        <h3 class="text-xl mb-4">Architectural Planning</h3>
+                        <p class="text-[#888] text-sm leading-relaxed">Systematic blueprinting merging aesthetic vision with functional feasibility and environmental harmony.</p>
+                    </div>
+                    <div class="p-12 border border-[#222] hover:bg-[#111] transition-colors group">
+                        <div class="text-[#C4A484] text-4xl mb-6">02</div>
+                        <h3 class="text-xl mb-4">Interior Styling</h3>
+                        <p class="text-[#888] text-sm leading-relaxed">Curation of textures, light, and furniture to create an atmosphere that speaks to the individual human habit.</p>
+                    </div>
+                    <div class="p-12 border border-[#222] hover:bg-[#111] transition-colors group">
+                        <div class="text-[#C4A484] text-4xl mb-6">03</div>
+                        <h3 class="text-xl mb-4">Project Management</h3>
+                        <p class="text-[#888] text-sm leading-relaxed">End-to-end oversight ensuring structural integrity, budget adherence, and timely delivery of excellence.</p>
+                    </div>
                 </div>
-                <div class="service-card reveal">
-                    <h3>Project Management</h3>
-                    <p>End-to-end oversight ensuring timeline precision and budgetary integrity.</p>
+
+                <!-- Social Proof Bar -->
+                <div class="mt-20 border-t border-[#222] pt-12 flex flex-wrap justify-center gap-12 opacity-30 fade-slide">
+                    <span class="text-xs font-bold tracking-widest grayscale hover:grayscale-0 cursor-pointer">BUILDER DIGEST</span>
+                    <span class="text-xs font-bold tracking-widest grayscale hover:grayscale-0 cursor-pointer">RIBA GOLD</span>
+                    <span class="text-xs font-bold tracking-widest grayscale hover:grayscale-0 cursor-pointer">ARCH DAILY</span>
+                    <span class="text-xs font-bold tracking-widest grayscale hover:grayscale-0 cursor-pointer">PREMIUM 500</span>
                 </div>
             </div>
         </section>
 
-        <!-- Section 5: Contact -->
+        <!-- SECTION 5: CONTACT -->
         <section id="contact">
-            <div class="contact-wrap">
-                <div>
-                    <h2 class="reveal">Start Your Journey.</h2>
-                    <p class="reveal" style="margin-top: 2rem; opacity: 0.6;">Trusted by 12,000+ homeowners and developers worldwide.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-6xl w-full">
+                <div class="fade-slide">
+                    <h2 class="text-6xl md:text-8xl mb-6">Start Your Journey.</h2>
+                    <p class="text-[#888] mb-12">Trusted by 12,000+ homeowners and developers worldwide. Our consultation process begins with understanding your unique lifestyle.</p>
+                    
+                    <div class="flex flex-col gap-4 text-sm font-medium">
+                        <div class="flex items-center gap-4">
+                            <span class="w-10 h-10 flex items-center justify-center border border-[#222] text-[#C4A484]">E</span>
+                            legacy@farewell26.com
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="w-10 h-10 flex items-center justify-center border border-[#222] text-[#C4A484]">L</span>
+                            +1 (555) 26-LEGACY
+                        </div>
+                    </div>
                 </div>
-                <form class="contact-form reveal" onsubmit="event.preventDefault(); document.getElementById('feedback').innerText = 'Inquiry Received.';">
-                    <input type="text" placeholder="Name" required>
-                    <input type="email" placeholder="Email" required>
-                    <select required>
-                        <option value="" disabled selected>Project Type</option>
-                        <option>Residential</option>
-                        <option>Commercial</option>
-                        <option>Institutional</option>
-                    </select>
-                    <input type="text" placeholder="Budget Range" required>
-                    <textarea placeholder="Tell us about your vision..." rows="4" class="full-width"></textarea>
-                    <button type="submit" class="submit-btn full-width">Send Inquiry</button>
-                    <p id="feedback" style="color: var(--accent); margin-top: 1rem; font-weight: 600;"></p>
-                </form>
+
+                <div class="bg-[#111] p-8 md:p-12 fade-slide">
+                    <form class="flex flex-col gap-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" placeholder="FULL NAME" required>
+                            <select required>
+                                <option value="" disabled selected>PROJECT TYPE</option>
+                                <option>Residential</option>
+                                <option>Commercial</option>
+                                <option>Institutional</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" placeholder="BUDGET (USD)">
+                            <input type="text" placeholder="TIMELINE">
+                        </div>
+                        <textarea rows="4" placeholder="BRIEF DESCRIPTION OF YOUR VISION"></textarea>
+                        <button type="submit" class="w-full bg-[#C4A484] text-black font-black py-4 uppercase tracking-[0.3em] hover:bg-[#F5F5F5] transition-colors">
+                            Initialize Project
+                        </button>
+                    </form>
+                </div>
             </div>
         </section>
     </main>
 
     <script>
-        // --- CUSTOM CURSOR ---
+        // --- 1. Custom Cursor Logic ---
         const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = `${e.clientX}px`;
-            cursor.style.top = `${e.clientY}px`;
+        const links = document.querySelectorAll('.nav-link, button, input, select, textarea, .gallery-item');
+
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
         });
 
-        const interactives = document.querySelectorAll('a, button, .gallery-item, input, select, textarea');
-        interactives.forEach(el => {
-            el.addEventListener('mouseenter', () => {
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
                 cursor.classList.add('hovered');
-                if(el.classList.contains('gallery-item')) cursor.classList.add('plus');
+                if (link.classList.contains('gallery-item')) {
+                    cursor.classList.add('plus');
+                }
             });
-            el.addEventListener('mouseleave', () => {
+            link.addEventListener('mouseleave', () => {
                 cursor.classList.remove('hovered');
                 cursor.classList.remove('plus');
             });
         });
 
-        // --- INTERSECTION OBSERVER ---
-        const revealOptions = { threshold: 0.2 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('active');
-                    }, index * 100);
-                }
-            });
-        }, revealOptions);
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        // --- HORIZONTAL PARALLAX & NAV TRANSITION ---
-        const scroller = document.getElementById('main-container');
+        // --- 2. Horizontal Scroll Parallax & Progress ---
+        const scroller = document.getElementById('mainScroller');
+        const progressBar = document.getElementById('progressBar');
         const nav = document.getElementById('navbar');
-        const parallaxImgs = document.querySelectorAll('.gallery-img');
+        const galleryItems = document.querySelectorAll('.gallery-item');
 
         scroller.addEventListener('scroll', () => {
             const scrollLeft = scroller.scrollLeft;
-            const viewportWidth = window.innerWidth;
+            const maxScroll = scroller.scrollWidth - window.innerWidth;
+            const progress = (scrollLeft / maxScroll) * 100;
+            
+            progressBar.style.width = progress + '%';
 
-            // Navbar toggle
-            if (scrollLeft > 100) nav.classList.add('scrolled');
-            else nav.classList.remove('scrolled');
+            // Nav background transition
+            if (scrollLeft > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
 
-            // Gallery Parallax
-            parallaxImgs.forEach(img => {
-                const parentRect = img.parentElement.getBoundingClientRect();
-                // Only animate if element is in/near viewport
-                if (parentRect.left < viewportWidth && parentRect.right > 0) {
-                    const offset = (parentRect.left / viewportWidth) * 50; // 50% speed
-                    img.style.transform = `translateX(${offset}px)`;
-                }
-            });
-        });
-
-        // --- SMOOTH NAVIGATION SNAPPING ---
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href');
-                const targetSection = document.querySelector(targetId);
+            // Parallax for gallery images
+            galleryItems.forEach(item => {
+                const wrapper = item.querySelector('.gallery-img-wrapper');
+                const itemRect = item.getBoundingClientRect();
+                const containerRect = scroller.getBoundingClientRect();
                 
-                if (window.innerWidth > 768) {
-                    scroller.scrollTo({
-                        left: targetSection.offsetLeft,
-                        behavior: 'smooth'
-                    });
-                } else {
-                    window.scrollTo({
-                        top: targetSection.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
+                // Calculate position relative to viewport
+                const relativeX = itemRect.left - containerRect.left;
+                // Move the background image slightly slower than foreground
+                const moveX = relativeX * 0.15; 
+                wrapper.style.transform = `translateX(${moveX}px)`;
             });
         });
 
-        // Fix layout on resize for scroller settings
-        window.addEventListener('resize', () => {
-            if (window.innerWidth <= 768) {
+        // --- 3. Intersection Observer for Animations ---
+        const observerOptions = {
+            threshold: 0.2
+        };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-slide').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // CTA Scroll trigger
+        document.querySelector('.gallery-trigger').addEventListener('click', () => {
+            document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Mobile Fix: Remove snap on small screens if scroller layout changes
+        const checkMobile = () => {
+            if (window.innerWidth < 768) {
                 scroller.style.overflowX = 'hidden';
+                scroller.style.overflowY = 'auto';
             } else {
                 scroller.style.overflowX = 'scroll';
+                scroller.style.overflowY = 'hidden';
             }
+        };
+
+        window.addEventListener('resize', checkMobile);
+        checkMobile();
+
+        // Form feedback mock
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = "PROJECT INITIALIZED ✓";
+            btn.style.backgroundColor = "#22c55e";
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.backgroundColor = "";
+                e.target.reset();
+            }, 3000);
         });
+
     </script>
 </body>
 </html>
