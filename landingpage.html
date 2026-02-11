@@ -3,34 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JNV HKD FAREWELL 2026 | Redefining Structural Integrity</title>
-    <!-- Fonts -->
+    <title>ARCANE | Redefining Structural Integrity</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* --- CSS VARIABLES & RESET --- */
         :root {
-            --bg-color: #0A0A0A;
-            --text-color: #F5F5F5;
-            --accent-color: #C4A484;
-            --glass-bg: rgba(10, 10, 10, 0.8);
-            --transition-smooth: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            --success-green: #4ade80;
+            --bg: #0A0A0A;
+            --text: #F5F5F5;
+            --accent: #C4A484;
+            --glass: rgba(10, 10, 10, 0.9);
+            --border: rgba(245, 245, 245, 0.1);
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; /* Hide default for custom cursor */
+            cursor: none; /* Hide default cursor */
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--bg);
+            color: var(--text);
             font-family: 'Work Sans', sans-serif;
-            overflow: hidden; /* Prevent body scroll, use container scroll */
+            overflow: hidden; /* Prevent body scroll, use container */
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
         h1, h2, h3 {
@@ -39,35 +40,44 @@
             letter-spacing: -0.02em;
         }
 
-        /* --- Custom Cursor --- */
+        /* --- CUSTOM CURSOR --- */
         #cursor {
             position: fixed;
             width: 20px;
             height: 20px;
-            background-color: var(--accent-color);
+            background-color: var(--accent);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            opacity: 0.4;
+            opacity: 0.5;
             transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, opacity 0.3s, border-radius 0.3s, background-color 0.3s;
+            transition: width 0.3s var(--ease), height 0.3s var(--ease), opacity 0.3s var(--ease), border-radius 0.3s var(--ease);
         }
 
         #cursor.hovered {
             width: 60px;
             height: 60px;
-            opacity: 0.2;
-            background-color: var(--text-color);
+            opacity: 0.15;
+            background-color: var(--text);
+        }
+
+        #cursor.plus::before, #cursor.plus::after {
+            content: '';
+            position: absolute;
+            background: var(--text);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         #cursor.plus {
+            border-radius: 4px;
             width: 40px;
             height: 40px;
-            border-radius: 4px;
             opacity: 0.8;
         }
 
-        /* --- Navigation --- */
+        /* --- NAVIGATION --- */
         nav {
             position: fixed;
             top: 0;
@@ -78,23 +88,22 @@
             align-items: center;
             padding: 2rem 4rem;
             z-index: 1000;
-            backdrop-filter: blur(10px);
-            background: transparent;
-            transition: var(--transition-smooth);
+            transition: all 0.5s var(--ease);
         }
 
         nav.scrolled {
-            padding: 1rem 4rem;
-            background: var(--glass-bg);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 1.2rem 4rem;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
         }
 
         .logo {
             font-family: 'Montserrat', sans-serif;
             font-weight: 900;
             font-size: 1.5rem;
-            color: var(--text-color);
             text-decoration: none;
+            color: var(--text);
         }
 
         .nav-links {
@@ -105,20 +114,20 @@
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            font-size: 0.9rem;
+            color: var(--text);
+            font-size: 0.8rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.2em;
             transition: color 0.3s;
         }
 
         .nav-links a:hover {
-            color: var(--accent-color);
+            color: var(--accent);
         }
 
-        /* --- Main Scroller --- */
-        #main-scroller {
+        /* --- SCROLL CONTAINER --- */
+        #main-container {
             display: flex;
             width: 100vw;
             height: 100vh;
@@ -126,12 +135,11 @@
             overflow-y: hidden;
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            scrollbar-width: none;
         }
 
-        #main-scroller::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+        #main-container::-webkit-scrollbar {
+            display: none;
         }
 
         section {
@@ -141,26 +149,26 @@
             scroll-snap-stop: always;
             position: relative;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            padding: 0 8rem;
+            padding: 0 10%;
             overflow: hidden;
         }
 
-        /* --- Hero Section --- */
+        /* --- HERO SECTION --- */
         #hero {
-            padding: 0;
             background: #000;
+            padding: 0;
         }
 
-        .hero-bg {
+        .hero-img {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.6;
+            opacity: 0.4;
             animation: kenBurns 20s infinite alternate;
         }
 
@@ -171,163 +179,145 @@
 
         .hero-content {
             position: relative;
-            z-index: 2;
+            z-index: 10;
+            max-width: 1000px;
+            margin: 0 auto;
             text-align: center;
-            max-width: 900px;
         }
 
         .hero-content h1 {
-            font-size: 5rem;
-            line-height: 0.9;
-            margin-bottom: 2rem;
-            opacity: 0;
-            transform: translateY(50px);
+            font-size: 5.5rem;
+            line-height: 1;
+            margin-bottom: 2.5rem;
         }
 
         .hero-content p {
-            font-size: 1.25rem;
-            margin-bottom: 3rem;
-            color: var(--accent-color);
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .cta-btn {
-            display: inline-block;
-            padding: 1.2rem 3rem;
-            border: 2px solid var(--accent-color);
-            color: var(--text-color);
-            text-decoration: none;
+            font-size: 1.2rem;
+            color: var(--accent);
             text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 3.5rem;
+        }
+
+        .cta {
+            display: inline-block;
+            padding: 1.5rem 3.5rem;
+            border: 2px solid var(--accent);
+            color: var(--text);
+            text-decoration: none;
             font-weight: 700;
+            text-transform: uppercase;
             letter-spacing: 0.2em;
-            transition: var(--transition-smooth);
-            opacity: 0;
-            transform: translateY(20px);
+            transition: all 0.4s var(--ease);
         }
 
-        .cta-btn:hover {
-            background: var(--accent-color);
-            color: var(--bg-color);
+        .cta:hover {
+            background: var(--accent);
+            color: var(--bg);
         }
 
-        /* --- Philosophy Section --- */
+        /* --- PHILOSOPHY SECTION --- */
         #philosophy {
-            background: var(--bg-color);
-            flex-direction: column;
-            text-align: left;
-            align-items: flex-start;
+            background: var(--bg);
         }
 
         .section-tag {
-            color: var(--accent-color);
-            text-transform: uppercase;
+            color: var(--accent);
             font-weight: 700;
-            margin-bottom: 1rem;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
             display: block;
         }
 
-        .philosophy-grid {
+        .split-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+            gap: 5rem;
+            align-items: center;
         }
 
         #philosophy h2 {
             font-size: 4rem;
-            max-width: 500px;
         }
 
         .philosophy-text {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 300;
-            max-width: 600px;
-            align-self: flex-end;
+            opacity: 0.8;
         }
 
-        /* --- Project Gallery --- */
+        /* --- GALLERY SECTION --- */
         #gallery {
-            padding: 0 4rem;
-            background: #0d0d0d;
+            background: #0D0D0D;
             justify-content: flex-start;
+            padding-right: 5rem;
         }
 
-        .gallery-container {
+        .gallery-track {
             display: flex;
-            gap: 2rem;
-            height: 70vh;
-            width: 100%;
+            gap: 3rem;
+            height: 65vh;
+            align-items: center;
         }
 
         .gallery-item {
             position: relative;
-            flex: 0 0 400px;
+            flex: 0 0 500px;
             height: 100%;
             overflow: hidden;
-            background: #1a1a1a;
-            border: 1px solid rgba(255,255,255,0.05);
+            background: #111;
+            border: 1px solid var(--border);
         }
 
         .gallery-img {
             position: absolute;
             top: 0;
-            left: -20%; /* For parallax */
+            left: -20%; /* Offset for parallax */
             width: 140%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(100%) contrast(120%);
-            transition: filter 0.5s ease, transform 0.1s linear;
+            filter: grayscale(1) brightness(0.6);
+            transition: filter 0.6s var(--ease);
         }
 
         .gallery-item:hover .gallery-img {
-            filter: grayscale(0%) brightness(0.4);
+            filter: grayscale(0) brightness(0.3);
         }
 
-        .gallery-overlay {
+        .gallery-info {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            padding: 2rem;
-            width: 100%;
-            transform: translateY(20px);
+            bottom: 3rem;
+            left: 3rem;
+            z-index: 5;
             opacity: 0;
-            transition: var(--transition-smooth);
+            transform: translateY(30px);
+            transition: all 0.6s var(--ease);
         }
 
-        .gallery-item:hover .gallery-overlay {
-            transform: translateY(0);
+        .gallery-item:hover .gallery-info {
             opacity: 1;
+            transform: translateY(0);
         }
 
-        .gallery-title {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
+        .gallery-info h3 { font-size: 1.8rem; }
 
-        .gallery-cat {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            color: var(--accent-color);
-        }
-
-        /* --- Services --- */
+        /* --- SERVICES SECTION --- */
         #services {
-            background: var(--bg-color);
+            background: var(--bg);
         }
 
         .services-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2px;
-            background: rgba(255,255,255,0.1);
-            width: 100%;
-            max-width: 1200px;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
         }
 
         .service-card {
-            background: var(--bg-color);
-            padding: 4rem 2rem;
-            transition: var(--transition-smooth);
+            background: var(--bg);
+            padding: 5rem 3rem;
+            transition: background 0.4s ease;
         }
 
         .service-card:hover {
@@ -335,112 +325,65 @@
         }
 
         .service-card h3 {
-            font-size: 1.25rem;
+            color: var(--accent);
             margin-bottom: 1.5rem;
-            color: var(--accent-color);
         }
 
-        /* --- Contact --- */
+        /* --- CONTACT SECTION --- */
         #contact {
             background: #000;
         }
 
-        .contact-container {
+        .contact-wrap {
             display: grid;
             grid-template-columns: 1fr 1.5fr;
             gap: 6rem;
-            width: 100%;
-            max-width: 1200px;
-        }
-
-        .contact-info h2 {
-            font-size: 3.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .social-proof {
-            margin-top: 4rem;
-            opacity: 0.6;
-            font-size: 0.9rem;
         }
 
         .contact-form {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .full-width {
-            grid-column: span 2;
+            gap: 2rem;
         }
 
         input, select, textarea {
             background: transparent;
             border: none;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            padding: 1rem 0;
-            color: var(--text-color);
+            border-bottom: 1px solid var(--border);
+            padding: 1.2rem 0;
+            color: var(--text);
             font-family: inherit;
+            width: 100%;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            transition: border-color 0.4s;
         }
 
-        input:focus, select:focus, textarea:focus {
+        input:focus {
             outline: none;
-            border-bottom-color: var(--accent-color);
+            border-bottom-color: var(--accent);
         }
 
-        input:focus::placeholder {
-            color: var(--accent-color);
-            opacity: 0.5;
-        }
+        .full-width { grid-column: span 2; }
 
         .submit-btn {
-            grid-column: span 2;
-            background: var(--accent-color);
-            color: var(--bg-color);
+            background: var(--accent);
+            color: var(--bg);
             border: none;
             padding: 1.5rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            margin-top: 2rem;
-            transition: var(--transition-smooth);
+            margin-top: 1rem;
+            transition: 0.4s;
         }
 
-        .submit-btn:hover {
-            letter-spacing: 0.3em;
-            background: var(--text-color);
-        }
+        .submit-btn:hover { background: var(--text); }
 
-        /* --- Message Box --- */
-        #message-box {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--accent-color);
-            color: var(--bg-color);
-            padding: 1rem 2rem;
-            font-weight: 700;
-            transform: translateY(200%);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 2000;
-        }
-
-        #message-box.show {
-            transform: translateY(0);
-        }
-
-        /* --- Animations --- */
+        /* --- ANIMATIONS --- */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
-            transition: opacity 1s ease, transform 1s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 1s var(--ease);
         }
 
         .reveal.active {
@@ -448,52 +391,41 @@
             transform: translateY(0);
         }
 
-        /* --- Mobile Responsiveness --- */
+        /* --- MOBILE RESPONSIVENESS --- */
         @media (max-width: 768px) {
             * { cursor: auto !important; }
             #cursor { display: none; }
+            body { overflow-y: auto; }
 
-            body {
-                overflow-y: auto;
-            }
-
-            #main-scroller {
+            #main-container {
                 display: block;
                 height: auto;
-                width: 100%;
-                overflow: visible;
                 scroll-snap-type: none;
+                overflow: visible;
             }
 
             section {
                 width: 100%;
                 height: auto;
-                min-height: 80vh;
+                min-height: 90vh;
                 padding: 6rem 2rem;
                 scroll-snap-align: none;
             }
 
-            nav {
-                padding: 1rem 2rem;
-                background: var(--glass-bg);
-            }
-
+            nav { padding: 1.5rem 2rem; background: var(--glass); }
             .nav-links { display: none; }
 
-            .hero-content h1 { font-size: 3rem; }
-            #philosophy h2 { font-size: 2.5rem; }
-            .philosophy-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .hero-content h1 { font-size: 2.8rem; }
+            .split-layout, .services-grid, .contact-wrap, .contact-form {
+                grid-template-columns: 1fr;
+            }
+            .full-width, .submit-btn { grid-column: span 1; }
             
-            .gallery-container {
+            .gallery-track {
                 flex-direction: column;
                 height: auto;
             }
             .gallery-item { flex: 0 0 400px; width: 100%; }
-
-            .services-grid { grid-template-columns: 1fr; }
-            .contact-container { grid-template-columns: 1fr; }
-            .contact-form { grid-template-columns: 1fr; }
-            .full-width, .submit-btn { grid-column: span 1; }
         }
     </style>
 </head>
@@ -505,74 +437,70 @@
         <a href="#" class="logo">ARCANE.</a>
         <ul class="nav-links">
             <li><a href="#hero">Home</a></li>
-            <li><a href="#philosophy">Philosophy</a></li>
-            <li><a href="#gallery">Projects</a></li>
+            <li><a href="#philosophy">About</a></li>
+            <li><a href="#gallery">Portfolio</a></li>
             <li><a href="#services">Services</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
-    <div id="message-box">Message sent successfully.</div>
-
-    <main id="main-scroller">
+    <main id="main-container">
         <!-- Section 1: Hero -->
         <section id="hero">
-            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070" alt="Architecture" class="hero-bg">
+            <img src="https://images.unsplash.com/photo-1449156001437-af90bb425750?auto=format&fit=crop&q=80&w=2070" class="hero-img" alt="Architecture">
             <div class="hero-content">
+                <p class="reveal">Architecture for the Individual Experience</p>
                 <h1 class="reveal">Redefining the Human Experience through Structural Integrity.</h1>
-                <p class="reveal">Merging structural precision with the nuances of human habit.</p>
-                <a href="#gallery" class="cta-btn reveal">Explore Our Recent Works</a>
+                <a href="#gallery" class="cta reveal">Explore Our Recent Works</a>
             </div>
         </section>
 
         <!-- Section 2: Philosophy -->
         <section id="philosophy">
-            <span class="section-tag reveal">Our Ethos</span>
-            <div class="philosophy-grid">
-                <h2 class="reveal">Restrained. Elegant. Precise.</h2>
+            <div class="split-layout">
+                <div>
+                    <span class="section-tag reveal">The Differentiator</span>
+                    <h2 class="reveal">Restrained. Elegant. Precise.</h2>
+                </div>
                 <div class="philosophy-text reveal">
-                    We believe architecture is more than just drafting lines; it is the art of curating life. Our firm caters to the client’s unique culture, optimizing productivity and well-being through intentional spatial design.
+                    We specialize in merging structural precision with the nuances of human habit. Our firm caters to the client’s unique culture, optimizing productivity and well-being through intentional, luxuriously practical space management.
                 </div>
             </div>
         </section>
 
         <!-- Section 3: Project Gallery -->
         <section id="gallery">
-            <div class="gallery-container">
+            <div class="gallery-track">
                 <!-- Item 1 -->
                 <div class="gallery-item reveal">
-                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" alt="Project" class="gallery-img" data-parallax="0.6">
-                    <div class="gallery-overlay">
-                        <p class="gallery-cat">Residential</p>
-                        <h3 class="gallery-title">The Monolith House</h3>
-                        <a href="#" class="cta-btn" style="padding: 0.5rem 1rem; font-size: 0.7rem;">View Project</a>
+                    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=800" class="gallery-img" data-speed="0.6">
+                    <div class="gallery-info">
+                        <span class="section-tag">Residential</span>
+                        <h3>The Monolith Villa</h3>
                     </div>
                 </div>
                 <!-- Item 2 -->
                 <div class="gallery-item reveal">
-                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" alt="Project" class="gallery-img" data-parallax="0.6">
-                    <div class="gallery-overlay">
-                        <p class="gallery-cat">Commercial</p>
-                        <h3 class="gallery-title">Aura HQ</h3>
-                        <a href="#" class="cta-btn" style="padding: 0.5rem 1rem; font-size: 0.7rem;">View Project</a>
+                    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&q=80&w=800" class="gallery-img" data-speed="0.6">
+                    <div class="gallery-info">
+                        <span class="section-tag">Commercial</span>
+                        <h3>Aether Nexus</h3>
                     </div>
                 </div>
                 <!-- Item 3 -->
                 <div class="gallery-item reveal">
-                    <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&q=80&w=800" alt="Project" class="gallery-img" data-parallax="0.6">
-                    <div class="gallery-overlay">
-                        <p class="gallery-cat">Institutional</p>
-                        <h3 class="gallery-title">Veridian Library</h3>
-                        <a href="#" class="cta-btn" style="padding: 0.5rem 1rem; font-size: 0.7rem;">View Project</a>
+                    <img src="https://images.unsplash.com/photo-1518005020480-1097c009703a?auto=format&fit=crop&q=80&w=800" class="gallery-img" data-speed="0.6">
+                    <div class="gallery-info">
+                        <span class="section-tag">Institutional</span>
+                        <h3>Veridian Library</h3>
                     </div>
                 </div>
                 <!-- Item 4 -->
                 <div class="gallery-item reveal">
-                    <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=800" alt="Project" class="gallery-img" data-parallax="0.6">
-                    <div class="gallery-overlay">
-                        <p class="gallery-cat">Residential</p>
-                        <h3 class="gallery-title">Canyon Villa</h3>
-                        <a href="#" class="cta-btn" style="padding: 0.5rem 1rem; font-size: 0.7rem;">View Project</a>
+                    <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=800" class="gallery-img" data-speed="0.6">
+                    <div class="gallery-info">
+                        <span class="section-tag">Residential</span>
+                        <h3>Canyon Heights</h3>
                     </div>
                 </div>
             </div>
@@ -580,158 +508,111 @@
 
         <!-- Section 4: Services -->
         <section id="services">
-            <div style="width: 100%;">
-                <span class="section-tag reveal" style="margin-bottom: 3rem;">Expertise</span>
-                <div class="services-grid">
-                    <div class="service-card reveal">
-                        <h3>Architectural Planning</h3>
-                        <p>Comprehensive blueprints that balance aesthetic vision with functional feasibility and structural code.</p>
-                    </div>
-                    <div class="service-card reveal">
-                        <h3>Interior Styling</h3>
-                        <p>Curated material palettes and bespoke furniture integration to define the soul of the internal space.</p>
-                    </div>
-                    <div class="service-card reveal">
-                        <h3>Project Management</h3>
-                        <p>End-to-end oversight ensuring timeline precision, budgetary integrity, and vendor excellence.</p>
-                    </div>
+            <span class="section-tag reveal" style="margin-bottom: 4rem;">Expertise & Mastery</span>
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <h3>Architectural Planning</h3>
+                    <p>High-precision blueprints that balance aesthetic vision with functional feasibility.</p>
+                </div>
+                <div class="service-card reveal">
+                    <h3>Interior Styling</h3>
+                    <p>Curated material selection that defines the emotional resonance of the space.</p>
+                </div>
+                <div class="service-card reveal">
+                    <h3>Project Management</h3>
+                    <p>End-to-end oversight ensuring timeline precision and budgetary integrity.</p>
                 </div>
             </div>
         </section>
 
         <!-- Section 5: Contact -->
         <section id="contact">
-            <div class="contact-container">
-                <div class="contact-info">
+            <div class="contact-wrap">
+                <div>
                     <h2 class="reveal">Start Your Journey.</h2>
-                    <p class="reveal">Our team is ready to transform your vision into a structural masterpiece.</p>
-                    <div class="social-proof reveal">
-                        Trusted by 12,000+ homeowners and developers worldwide.
-                    </div>
+                    <p class="reveal" style="margin-top: 2rem; opacity: 0.6;">Trusted by 12,000+ homeowners and developers worldwide.</p>
                 </div>
-                <form class="contact-form reveal" id="architectForm">
-                    <div class="form-group">
-                        <input type="text" placeholder="Full Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Email Address" required>
-                    </div>
-                    <div class="form-group">
-                        <select required>
-                            <option value="" disabled selected>Project Type</option>
-                            <option>Residential</option>
-                            <option>Commercial</option>
-                            <option>Institutional</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select required>
-                            <option value="" disabled selected>Budget Range</option>
-                            <option>$50k - $200k</option>
-                            <option>$200k - $1M</option>
-                            <option>$1M+</option>
-                        </select>
-                    </div>
-                    <div class="form-group full-width">
-                        <textarea rows="4" placeholder="Tell us about your project..."></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Send Inquiry</button>
+                <form class="contact-form reveal" onsubmit="event.preventDefault(); document.getElementById('feedback').innerText = 'Inquiry Received.';">
+                    <input type="text" placeholder="Name" required>
+                    <input type="email" placeholder="Email" required>
+                    <select required>
+                        <option value="" disabled selected>Project Type</option>
+                        <option>Residential</option>
+                        <option>Commercial</option>
+                        <option>Institutional</option>
+                    </select>
+                    <input type="text" placeholder="Budget Range" required>
+                    <textarea placeholder="Tell us about your vision..." rows="4" class="full-width"></textarea>
+                    <button type="submit" class="submit-btn full-width">Send Inquiry</button>
+                    <p id="feedback" style="color: var(--accent); margin-top: 1rem; font-weight: 600;"></p>
                 </form>
             </div>
         </section>
     </main>
 
     <script>
-        // Custom Cursor Logic
+        // --- CUSTOM CURSOR ---
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
         });
 
-        const hoverables = document.querySelectorAll('a, button, .gallery-item, input, select, textarea');
-        hoverables.forEach(item => {
-            item.addEventListener('mouseenter', () => {
+        const interactives = document.querySelectorAll('a, button, .gallery-item, input, select, textarea');
+        interactives.forEach(el => {
+            el.addEventListener('mouseenter', () => {
                 cursor.classList.add('hovered');
-                if(item.classList.contains('gallery-item')) {
-                    cursor.classList.add('plus');
-                }
+                if(el.classList.contains('gallery-item')) cursor.classList.add('plus');
             });
-            item.addEventListener('mouseleave', () => {
+            el.addEventListener('mouseleave', () => {
                 cursor.classList.remove('hovered');
                 cursor.classList.remove('plus');
             });
         });
 
-        // Intersection Observer for Animations
-        const observerOptions = {
-            threshold: 0.2
-        };
-
-        const revealObserver = new IntersectionObserver((entries) => {
+        // --- INTERSECTION OBSERVER ---
+        const revealOptions = { threshold: 0.2 };
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    // Staggering effect
                     setTimeout(() => {
                         entry.target.classList.add('active');
                     }, index * 100);
                 }
             });
-        }, observerOptions);
+        }, revealOptions);
 
-        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Horizontal Parallax Effect for Gallery
-        const scroller = document.getElementById('main-scroller');
-        const parallaxImages = document.querySelectorAll('.gallery-img');
+        // --- HORIZONTAL PARALLAX & NAV TRANSITION ---
+        const scroller = document.getElementById('main-container');
+        const nav = document.getElementById('navbar');
+        const parallaxImgs = document.querySelectorAll('.gallery-img');
 
         scroller.addEventListener('scroll', () => {
             const scrollLeft = scroller.scrollLeft;
             const viewportWidth = window.innerWidth;
 
-            parallaxImages.forEach(img => {
-                const parent = img.parentElement;
-                const parentOffset = parent.offsetLeft;
-                
-                // Calculate position relative to viewport
-                const relativePos = parentOffset - scrollLeft;
-                
-                if (relativePos < viewportWidth && relativePos > -400) {
-                    const movement = (relativePos / viewportWidth) * 40; // Adjust for intensity
-                    img.style.transform = `translateX(${movement}px)`;
+            // Navbar toggle
+            if (scrollLeft > 100) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+
+            // Gallery Parallax
+            parallaxImgs.forEach(img => {
+                const parentRect = img.parentElement.getBoundingClientRect();
+                // Only animate if element is in/near viewport
+                if (parentRect.left < viewportWidth && parentRect.right > 0) {
+                    const offset = (parentRect.left / viewportWidth) * 50; // 50% speed
+                    img.style.transform = `translateX(${offset}px)`;
                 }
             });
-
-            // Nav background transition
-            const nav = document.getElementById('navbar');
-            if (scrollLeft > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
         });
 
-        // Form Handling
-        const form = document.getElementById('architectForm');
-        const messageBox = document.getElementById('message-box');
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Show custom success message
-            messageBox.classList.add('show');
-            form.reset();
-
-            setTimeout(() => {
-                messageBox.classList.remove('show');
-            }, 3000);
-        });
-
-        // Smooth Section Snapping for Nav Links
-        document.querySelectorAll('.nav-links a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+        // --- SMOOTH NAVIGATION SNAPPING ---
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const targetId = this.getAttribute('href');
+                const targetId = link.getAttribute('href');
                 const targetSection = document.querySelector(targetId);
                 
                 if (window.innerWidth > 768) {
@@ -748,10 +629,10 @@
             });
         });
 
-        // Initial check for mobile to disable horizontal JS features
+        // Fix layout on resize for scroller settings
         window.addEventListener('resize', () => {
             if (window.innerWidth <= 768) {
-                scroller.style.overflowX = 'visible';
+                scroller.style.overflowX = 'hidden';
             } else {
                 scroller.style.overflowX = 'scroll';
             }
