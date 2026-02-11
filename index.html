@@ -30,6 +30,8 @@
             color: var(--text-color);
             font-family: 'Work Sans', sans-serif;
             overflow: hidden; 
+            width: 100vw;
+            height: 100vh;
         }
 
         h1, h2, h3 {
@@ -50,6 +52,7 @@
             mix-blend-mode: difference;
             transition: transform 0.2s ease, opacity 0.2s ease, border-radius 0.2s ease;
             transform: translate(-50%, -50%);
+            left: -100px; /* Hide initially */
         }
 
         #cursor.hovered {
@@ -68,15 +71,18 @@
             font-family: serif;
         }
 
-        /* Snap Container */
+        /* Snap Container - Updated to Vertical */
         .snap-container {
             display: flex;
+            flex-direction: column;
             width: 100vw;
             height: 100vh;
-            overflow-x: scroll;
-            scroll-snap-type: x mandatory;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-snap-type: y mandatory;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            scroll-behavior: smooth;
         }
 
         .snap-container::-webkit-scrollbar {
@@ -84,7 +90,8 @@
         }
 
         section {
-            flex: 0 0 100vw;
+            flex: 0 0 100vh;
+            width: 100vw;
             height: 100vh;
             scroll-snap-align: start;
             scroll-snap-stop: always;
@@ -133,24 +140,33 @@
             100% { transform: scale(1.1); }
         }
 
+        /* Adjusted Gallery for Vertical Flow */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
         .gallery-item {
             position: relative;
-            width: 30vw;
+            width: 100%;
             height: 60vh;
-            margin: 0 2rem;
             overflow: hidden;
-            flex-shrink: 0;
+            background: #111;
         }
 
         .gallery-img-wrapper {
             position: absolute;
-            top: 0;
-            left: -20%;
-            width: 140%;
-            height: 100%;
+            top: -20%;
+            left: 0;
+            width: 100%;
+            height: 140%;
             background-size: cover;
             background-position: center;
             will-change: transform;
+            transition: transform 0.1s ease-out;
         }
 
         .gallery-content {
@@ -185,41 +201,44 @@
 
         .progress-container {
             position: fixed;
-            bottom: 2rem;
-            left: 4rem;
-            width: 200px;
-            height: 2px;
-            background: #222;
-            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+            z-index: 1001;
         }
 
         .progress-bar {
             height: 100%;
             background: var(--accent-color);
             width: 0%;
+            transition: width 0.1s ease-out;
+        }
+
+        @media (max-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
-            body { overflow-y: auto; }
             .snap-container {
-                flex-direction: column;
-                height: auto;
-                width: 100%;
-                overflow-x: hidden;
                 scroll-snap-type: none;
             }
             section {
-                width: 100%;
+                padding: 6rem 2rem;
                 height: auto;
                 min-height: 100vh;
-                padding: 6rem 2rem;
+                flex: 0 0 auto;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
             }
             .gallery-item {
-                width: 100%;
-                margin: 1rem 0;
+                height: 40vh;
             }
-            nav { padding: 1rem 2rem; }
-            .progress-container { display: none; }
+            nav { padding: 1.5rem 2rem; }
         }
 
         input, select, textarea {
@@ -245,10 +264,10 @@
     <nav id="navbar">
         <div class="text-2xl font-black tracking-tighter" style="color: var(--accent-color);">JNV HKD</div>
         <div class="hidden md:flex gap-8 uppercase text-xs tracking-widest font-medium">
-            <a href="#hero" class="nav-link">Home</a>
-            <a href="#philosophy" class="nav-link">Legacy</a>
-            <a href="#gallery" class="nav-link">Portfolio</a>
-            <a href="#contact" class="px-4 py-2 bg-[#F5F5F5] text-black font-bold hover:bg-[#C4A484] transition-colors nav-link">Start Journey</a>
+            <a href="javascript:void(0)" onclick="scrollToSection('hero')" class="nav-link">Home</a>
+            <a href="javascript:void(0)" onclick="scrollToSection('philosophy')" class="nav-link">Legacy</a>
+            <a href="javascript:void(0)" onclick="scrollToSection('gallery')" class="nav-link">Portfolio</a>
+            <a href="javascript:void(0)" onclick="scrollToSection('contact')" class="px-4 py-2 bg-[#F5F5F5] text-black font-bold hover:bg-[#C4A484] transition-colors nav-link">Start Journey</a>
         </div>
     </nav>
 
@@ -289,12 +308,12 @@
             </div>
         </section>
 
-        <section id="gallery" class="flex flex-col items-start justify-center">
-            <div class="mb-12 ml-4 md:ml-20 fade-slide">
+        <section id="gallery" class="flex flex-col items-center justify-center">
+            <div class="mb-12 w-full max-w-6xl fade-slide">
                 <h2 class="text-5xl md:text-8xl">The Proof</h2>
             </div>
             
-            <div class="flex flex-nowrap md:px-20" id="parallaxGallery">
+            <div class="gallery-grid" id="parallaxGallery">
                 <div class="gallery-item group">
                     <div class="gallery-img-wrapper" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000');"></div>
                     <div class="gallery-content">
@@ -305,6 +324,12 @@
                     <div class="gallery-img-wrapper" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1000');"></div>
                     <div class="gallery-content">
                         <h3 class="text-2xl">Commercial</h3>
+                    </div>
+                </div>
+                <div class="gallery-item group">
+                    <div class="gallery-img-wrapper" style="background-image: url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&q=80&w=1000');"></div>
+                    <div class="gallery-content">
+                        <h3 class="text-2xl">Institutional</h3>
                     </div>
                 </div>
             </div>
@@ -337,7 +362,7 @@
     </main>
 
     <script>
-        // Cursor
+        // Cursor Logic
         const cursor = document.getElementById('cursor');
         const links = document.querySelectorAll('.nav-link, button, input, select, textarea, .gallery-item');
 
@@ -357,34 +382,70 @@
             });
         });
 
-        // Scroll Logic
+        // Navigation Helper (Updated for vertical)
+        function scrollToSection(id) {
+            const section = document.getElementById(id);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Scroll Logic & Parallax (Updated for vertical)
         const scroller = document.getElementById('mainScroller');
         const progressBar = document.getElementById('progressBar');
         const galleryItems = document.querySelectorAll('.gallery-item');
+        const navbar = document.getElementById('navbar');
 
         scroller.addEventListener('scroll', () => {
-            const scrollLeft = scroller.scrollLeft;
-            const maxScroll = scroller.scrollWidth - window.innerWidth;
-            progressBar.style.width = ((scrollLeft / maxScroll) * 100) + '%';
+            const scrollTop = scroller.scrollTop;
+            const maxScroll = scroller.scrollHeight - scroller.clientHeight;
+            
+            // Progress bar update
+            const progress = (scrollTop / maxScroll) * 100;
+            progressBar.style.width = progress + '%';
 
+            // Navbar background
+            if (scrollTop > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            // Enhanced Vertical Parallax Logic
             galleryItems.forEach(item => {
                 const wrapper = item.querySelector('.gallery-img-wrapper');
-                const relativeX = item.getBoundingClientRect().left;
-                wrapper.style.transform = `translateX(${relativeX * 0.1}px)`;
+                const rect = item.getBoundingClientRect();
+                
+                // Calculate item position relative to the center of the viewport vertically
+                const itemCenterY = rect.top + rect.height / 2;
+                const viewportCenterY = window.innerHeight / 2;
+                const distanceFromCenter = itemCenterY - viewportCenterY;
+                
+                // Translate the inner image on the Y-axis
+                const movement = distanceFromCenter * 0.2;
+                wrapper.style.transform = `translateY(${movement}px)`;
             });
         });
 
-        // Entrance
+        // Intersection Observer for Entrance Animations
+        const revealOptions = {
+            root: scroller,
+            threshold: 0.15
+        };
+
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
             });
-        }, { threshold: 0.1 });
+        }, revealOptions);
 
         document.querySelectorAll('.fade-slide').forEach(el => revealObserver.observe(el));
 
+        // Explore button trigger
         document.getElementById('cta-explore').addEventListener('click', () => {
-            document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+            scrollToSection('gallery');
         });
     </script>
 </body>
