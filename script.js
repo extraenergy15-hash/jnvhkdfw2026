@@ -1,114 +1,105 @@
-// Custom Cursor Logic
+// --- 1. Custom Cursor Logic ---
 const cursor = document.getElementById('cursor');
-document.addEventListener('mousemove', (e) => {
+const links = document.querySelectorAll('.nav-link, button, input, select, textarea, .gallery-item');
+
+window.addEventListener('mousemove', (e) => {
     cursor.style.left = e.clientX + 'px';
     cursor.style.top = e.clientY + 'px';
 });
 
-const hoverables = document.querySelectorAll('a, button, .gallery-item, input, select, textarea');
-hoverables.forEach(item => {
-    item.addEventListener('mouseenter', () => {
+links.forEach(link => {
+    link.addEventListener('mouseenter', () => {
         cursor.classList.add('hovered');
-        if(item.classList.contains('gallery-item')) {
+        if (link.classList.contains('gallery-item')) {
             cursor.classList.add('plus');
         }
     });
-    item.addEventListener('mouseleave', () => {
+    link.addEventListener('mouseleave', () => {
         cursor.classList.remove('hovered');
         cursor.classList.remove('plus');
     });
 });
 
-// Intersection Observer for Animations
-const observerOptions = {
-    threshold: 0.2
-};
-
-const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-            // Staggering effect
-            setTimeout(() => {
-                entry.target.classList.add('active');
-            }, index * 100);
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-// Horizontal Parallax Effect for Gallery
-const scroller = document.getElementById('main-scroller');
-const parallaxImages = document.querySelectorAll('.gallery-img');
+// --- 2. Horizontal Scroll Parallax & Progress ---
+const scroller = document.getElementById('mainScroller');
+const progressBar = document.getElementById('progressBar');
+const nav = document.getElementById('navbar');
+const galleryItems = document.querySelectorAll('.gallery-item');
 
 scroller.addEventListener('scroll', () => {
     const scrollLeft = scroller.scrollLeft;
-    const viewportWidth = window.innerWidth;
-
-    parallaxImages.forEach(img => {
-        const parent = img.parentElement;
-        const parentOffset = parent.offsetLeft;
-        
-        // Calculate position relative to viewport
-        const relativePos = parentOffset - scrollLeft;
-        
-        if (relativePos < viewportWidth && relativePos > -400) {
-            const movement = (relativePos / viewportWidth) * 40; // Adjust for intensity
-            img.style.transform = `translateX(${movement}px)`;
-        }
-    });
+    const maxScroll = scroller.scrollWidth - window.innerWidth;
+    const progress = (scrollLeft / maxScroll) * 100;
+    
+    progressBar.style.width = progress + '%';
 
     // Nav background transition
-    const nav = document.getElementById('navbar');
     if (scrollLeft > 50) {
         nav.classList.add('scrolled');
     } else {
         nav.classList.remove('scrolled');
     }
-});
 
-// Form Handling
-const form = document.getElementById('architectForm');
-const messageBox = document.getElementById('message-box');
-
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // Show custom success message
-    messageBox.classList.add('show');
-    form.reset();
-
-    setTimeout(() => {
-        messageBox.classList.remove('show');
-    }, 3000);
-});
-
-// Smooth Section Snapping for Nav Links
-document.querySelectorAll('.nav-links a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
+    // Parallax for gallery images
+    galleryItems.forEach(item => {
+        const wrapper = item.querySelector('.gallery-img-wrapper');
+        const itemRect = item.getBoundingClientRect();
+        const containerRect = scroller.getBoundingClientRect();
         
-        if (window.innerWidth > 768) {
-            scroller.scrollTo({
-                left: targetSection.offsetLeft,
-                behavior: 'smooth'
-            });
-        } else {
-            window.scrollTo({
-                top: targetSection.offsetTop - 80,
-                behavior: 'smooth'
-            });
-        }
+        // Calculate position relative to viewport
+        const relativeX = itemRect.left - containerRect.left;
+        // Move the background image slightly slower than foreground
+        const moveX = relativeX * 0.15; 
+        wrapper.style.transform = `translateX(${moveX}px)`;
     });
 });
 
-// Initial check for mobile to disable horizontal JS features
-window.addEventListener('resize', () => {
-    if (window.innerWidth <= 768) {
-        scroller.style.overflowX = 'visible';
+// --- 3. Intersection Observer for Animations ---
+const observerOptions = {
+    threshold: 0.2
+};
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.fade-slide').forEach(el => {
+    revealObserver.observe(el);
+});
+
+// CTA Scroll trigger
+document.querySelector('.gallery-trigger').addEventListener('click', () => {
+    document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+});
+
+// Mobile Fix: Remove snap on small screens if scroller layout changes
+const checkMobile = () => {
+    if (window.innerWidth < 768) {
+        scroller.style.overflowX = 'hidden';
+        scroller.style.overflowY = 'auto';
     } else {
         scroller.style.overflowX = 'scroll';
+        scroller.style.overflowY = 'hidden';
     }
+};
+
+window.addEventListener('resize', checkMobile);
+checkMobile();
+
+// Form feedback mock
+document.querySelector('form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const originalText = btn.innerText;
+    btn.innerText = "PROJECT INITIALIZED ✓";
+    btn.style.backgroundColor = "#22c55e";
+    setTimeout(() => {
+        btn.innerText = originalText;
+        btn.style.backgroundColor = "";
+        e.target.reset();
+    }, 3000);
 });
